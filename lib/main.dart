@@ -12,7 +12,7 @@ import 'shared/providers/theme_provider.dart';
 import 'shared/providers/auth_provider.dart';
 import 'features/splash/presentation/pages/splash_page.dart';
 import 'features/auth/presentation/pages/auth_page.dart';
-import 'features/home/presentation/pages/home_page.dart';
+import 'pages/home/home_page.dart';
 import 'features/events/presentation/pages/events_page.dart';
 import 'features/tours/presentation/pages/tours_page.dart';
 import 'features/shopping/presentation/pages/shopping_page.dart';

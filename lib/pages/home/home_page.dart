@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../../../core/config/app_config.dart';
-import '../../../../core/services/categories_service.dart';
+import '../../core/config/app_config.dart';
+import '../../core/services/categories_service.dart';
 import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
@@ -38,19 +38,17 @@ class _HomePageState extends State<HomePage> {
       body: ListView(
         padding: const EdgeInsets.all(AppConfig.spacingM),
         children: [
-          // Daily Offers
-          _SectionTitle(title: l10n.todaysOffers),
-          _HorizontalCardList(
-            itemCount: 3,
-            cardBuilder: (context, i) => _OfferCard(),
-          ),
+          // Announcements Bar
+          _buildAnnouncementsBar(),
+          const SizedBox(height: AppConfig.spacingL),
+
+          // Events & Festivals
+          _buildEventsSection(),
+
           const SizedBox(height: AppConfig.spacingL),
           // Nearby Places (GPS)
-          _SectionTitle(title: l10n.nearbyPlaces),
-          _HorizontalCardList(
-            itemCount: 3,
-            cardBuilder: (context, i) => _PlaceCard(),
-          ),
+          _buildFeaturedSitesSection(),
+
           const SizedBox(height: AppConfig.spacingL),
           // Trip Suggestions
           _SectionTitle(title: l10n.tripSuggestions),
@@ -59,12 +57,7 @@ class _HomePageState extends State<HomePage> {
             cardBuilder: (context, i) => _TripSuggestionCard(),
           ),
           const SizedBox(height: AppConfig.spacingL),
-          // Events & Festivals
-          _SectionTitle(title: l10n.eventsFestivals),
-          _HorizontalCardList(
-            itemCount: 2,
-            cardBuilder: (context, i) => _EventCard(),
-          ),
+
           const SizedBox(height: AppConfig.spacingL),
           // Personalized Recommendations
           _SectionTitle(title: l10n.recommendedForYou),
@@ -72,15 +65,192 @@ class _HomePageState extends State<HomePage> {
             itemCount: 3,
             cardBuilder: (context, i) => _RecommendationCard(),
           ),
+          const SizedBox(height: AppConfig.spacingL),
+          // Bottom Services Section
+          _buildBottomServicesSection(),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: AppConfig.secondaryColor,
-        icon: const Icon(Icons.map),
-        label: Text(l10n.map),
-        onPressed: () {
-          context.go('/map');
-        },
+    );
+  }
+
+  Widget _buildAnnouncementsBar() {
+    final l10n = AppLocalizations.of(context)!;
+
+    // Sample announcements data
+    final announcements = [
+      {
+        'title': l10n.announcementNewFeature,
+        'icon': Icons.new_releases,
+        'color': AppConfig.primaryColor,
+        'isNew': true,
+      },
+      {
+        'title': l10n.announcementSpecialOffer,
+        'icon': Icons.local_offer,
+        'color': AppConfig.secondaryColor,
+        'isNew': false,
+      },
+      {
+        'title': l10n.announcementEvent,
+        'icon': Icons.event,
+        'color': AppConfig.syrianRed,
+        'isNew': true,
+      },
+      {
+        'title': l10n.announcementUpdate,
+        'icon': Icons.system_update,
+        'color': AppConfig.syrianGreen,
+        'isNew': false,
+      },
+      {
+        'title': l10n.announcementMaintenance,
+        'icon': Icons.build,
+        'color': AppConfig.syrianGold,
+        'isNew': false,
+      },
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              l10n.announcements,
+              style: AppConfig.heading3.copyWith(fontWeight: FontWeight.bold),
+            ),
+            TextButton(
+              onPressed: () {
+                // TODO: Navigate to all announcements page
+              },
+              child: Text(
+                l10n.viewAll,
+                style: AppConfig.body2.copyWith(
+                  color: AppConfig.primaryColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: AppConfig.spacingS),
+        SizedBox(
+          height: 100,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: announcements.length,
+            separatorBuilder: (context, index) =>
+                const SizedBox(width: AppConfig.spacingM),
+            itemBuilder: (context, index) {
+              final announcement = announcements[index];
+              return _buildAnnouncementCard(
+                title: announcement['title'] as String,
+                icon: announcement['icon'] as IconData,
+                color: announcement['color'] as Color,
+                isNew: announcement['isNew'] as bool,
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAnnouncementCard({
+    required String title,
+    required IconData icon,
+    required Color color,
+    required bool isNew,
+  }) {
+    return GestureDetector(
+      onTap: () {
+        // TODO: Show announcement details
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(title),
+            backgroundColor: color,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      },
+      child: Container(
+        width: 120,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              color.withValues(alpha: 0.1),
+              color.withValues(alpha: 0.05),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(AppConfig.radiusM),
+          border: Border.all(
+            color: isNew ? color : color.withValues(alpha: 0.3),
+            width: isNew ? 2 : 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: color.withValues(alpha: 0.1),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(AppConfig.spacingM),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(AppConfig.spacingS),
+                    decoration: BoxDecoration(
+                      color: color.withValues(alpha: 0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      icon,
+                      size: 24,
+                      color: color,
+                    ),
+                  ),
+                  const SizedBox(height: AppConfig.spacingS),
+                  Text(
+                    title,
+                    style: AppConfig.body2.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 11,
+                      color: color,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            if (isNew)
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Container(
+                  width: 12,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: AppConfig.syrianRed,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 2,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -255,7 +425,7 @@ class _HomePageState extends State<HomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(l10n.homeFeaturedSites, style: AppConfig.heading3),
+        Text(l10n.nearbyPlaces, style: AppConfig.heading3),
         const SizedBox(height: AppConfig.spacingM),
         SizedBox(
           height: 200,
@@ -339,7 +509,7 @@ class _HomePageState extends State<HomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(l10n.homeEvents, style: AppConfig.heading3),
+        Text(l10n.eventsFestivals, style: AppConfig.heading3),
         const SizedBox(height: AppConfig.spacingM),
         SizedBox(
           height: 130,
@@ -527,6 +697,141 @@ class _HomePageState extends State<HomePage> {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomServicesSection() {
+    final l10n = AppLocalizations.of(context)!;
+
+    final services = [
+      {
+        'icon': Icons.directions_car,
+        'label': l10n.transportation,
+        'color': AppConfig.primaryColor,
+        'onTap': () {
+          context.go('/transportation');
+        },
+      },
+      {
+        'icon': Icons.event,
+        'label': l10n.events,
+        'color': AppConfig.syrianGreen,
+        'onTap': () {
+          context.go('/events');
+        },
+      },
+      {
+        'icon': Icons.newspaper,
+        'label': l10n.news,
+        'color': AppConfig.accentColor,
+        'onTap': () {
+          context.go('/news');
+        },
+      },
+      {
+        'icon': Icons.lightbulb_outline,
+        'label': l10n.opportunities,
+        'color': AppConfig.secondaryColor,
+        'onTap': () {
+          context.go('/opportunities');
+        },
+      },
+      {
+        'icon': Icons.hotel,
+        'label': l10n.accommodation,
+        'color': AppConfig.syrianGold,
+        'onTap': () {
+          context.go('/accommodation');
+        },
+      },
+      {
+        'icon': Icons.restaurant,
+        'label': l10n.restaurants,
+        'color': AppConfig.warningColor,
+        'onTap': () {
+          context.go('/restaurants');
+        },
+      },
+      {
+        'icon': Icons.local_hospital,
+        'label': l10n.facilities,
+        'color': AppConfig.syrianRed,
+        'onTap': () {
+          context.go('/facilities');
+        },
+      },
+      {
+        'icon': Icons.notifications,
+        'label': l10n.announcements,
+        'color': AppConfig.primaryColor,
+        'onTap': () {
+          context.go('/announcements');
+        },
+      },
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(l10n.homeBottomServices, style: AppConfig.heading3),
+        const SizedBox(height: AppConfig.spacingM),
+        SizedBox(
+          height: 100,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: services.length,
+            separatorBuilder: (context, index) =>
+                const SizedBox(width: AppConfig.spacingM),
+            itemBuilder: (context, index) {
+              final service = services[index];
+              return _buildBottomServiceCard(
+                icon: service['icon'] as IconData,
+                label: service['label'] as String,
+                color: service['color'] as Color,
+                onTap: service['onTap'] as VoidCallback,
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBottomServiceCard({
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 100,
+        padding: const EdgeInsets.all(AppConfig.spacingM),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(AppConfig.radiusM),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: color, size: 36),
+            const SizedBox(height: AppConfig.spacingS),
+            Text(
+              label,
+              style: AppConfig.body2.copyWith(
+                fontWeight: FontWeight.w600,
+                color: color,
+                fontSize: 12,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),

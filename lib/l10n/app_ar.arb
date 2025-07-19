@@ -206,5 +206,19 @@
   
   "castles": "القلاع",
   "free": "مجاني",
-  "paid": "مدفوع"
+  "paid": "مدفوع",
+  
+  "announcements": "الإعلانات",
+  "announcementNewFeature": "ميزة جديدة",
+  "announcementSpecialOffer": "عرض خاص",
+  "announcementEvent": "حدث",
+  "announcementUpdate": "تحديث",
+  "announcementMaintenance": "صيانة",
+  
+  "transportation": "النقل",
+  "news": "الأخبار",
+  "opportunities": "الفرص",
+  "restaurants": "المطاعم",
+  "facilities": "المرافق",
+  "homeBottomServices": "الخدمات والمزيد"
 } 

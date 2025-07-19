@@ -206,5 +206,19 @@
   
   "castles": "城堡",
   "free": "免费",
-  "paid": "付费"
+  "paid": "付费",
+  
+  "announcements": "公告",
+  "announcementNewFeature": "新功能",
+  "announcementSpecialOffer": "特别优惠",
+  "announcementEvent": "活动",
+  "announcementUpdate": "更新",
+  "announcementMaintenance": "维护",
+  
+  "transportation": "交通",
+  "news": "新闻",
+  "opportunities": "机会",
+  "restaurants": "餐厅",
+  "facilities": "设施",
+  "homeBottomServices": "服务与更多"
 } 

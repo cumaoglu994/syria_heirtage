@@ -206,5 +206,19 @@
   
   "castles": "Kaleler",
   "free": "Ücretsiz",
-  "paid": "Ücretli"
+  "paid": "Ücretli",
+  
+  "announcements": "Duyurular",
+  "announcementNewFeature": "Yeni Özellik",
+  "announcementSpecialOffer": "Özel Teklif",
+  "announcementEvent": "Etkinlik",
+  "announcementUpdate": "Güncelleme",
+  "announcementMaintenance": "Bakım",
+  
+  "transportation": "Ulaşım",
+  "news": "Haberler",
+  "opportunities": "Fırsatlar",
+  "restaurants": "Restoranlar",
+  "facilities": "Tesisler",
+  "homeBottomServices": "Hizmetler ve Daha Fazlası"
 } 

@@ -206,5 +206,19 @@
   
   "castles": "Замки",
   "free": "Бесплатно",
-  "paid": "Платно"
+  "paid": "Платно",
+  
+  "announcements": "Объявления",
+  "announcementNewFeature": "Новая функция",
+  "announcementSpecialOffer": "Специальное предложение",
+  "announcementEvent": "Событие",
+  "announcementUpdate": "Обновление",
+  "announcementMaintenance": "Обслуживание",
+  
+  "transportation": "Транспорт",
+  "news": "Новости",
+  "opportunities": "Возможности",
+  "restaurants": "Рестораны",
+  "facilities": "Удобства",
+  "homeBottomServices": "Услуги и Другое"
 } 

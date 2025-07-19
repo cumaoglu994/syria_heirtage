@@ -213,5 +213,19 @@
   
   "castles": "Castles",
   "free": "Free",
-  "paid": "Paid"
+  "paid": "Paid",
+  
+  "announcements": "Announcements",
+  "announcementNewFeature": "New Feature",
+  "announcementSpecialOffer": "Special Offer",
+  "announcementEvent": "Event",
+  "announcementUpdate": "Update",
+  "announcementMaintenance": "Maintenance",
+  
+  "transportation": "Transportation",
+  "news": "News",
+  "opportunities": "Opportunities",
+  "restaurants": "Restaurants",
+  "facilities": "Facilities",
+  "homeBottomServices": "Services & More"
 } 

@@ -206,5 +206,19 @@
   
   "castles": "Châteaux",
   "free": "Gratuit",
-  "paid": "Payant"
+  "paid": "Payant",
+  
+  "announcements": "Annonces",
+  "announcementNewFeature": "Nouvelle fonctionnalité",
+  "announcementSpecialOffer": "Offre spéciale",
+  "announcementEvent": "Événement",
+  "announcementUpdate": "Mise à jour",
+  "announcementMaintenance": "Maintenance",
+  
+  "transportation": "Transport",
+  "news": "Actualités",
+  "opportunities": "Opportunités",
+  "restaurants": "Restaurants",
+  "facilities": "Installations",
+  "homeBottomServices": "Services et Plus"
 } 
