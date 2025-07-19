@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../core/config/app_config.dart';
+import '../../../../core/services/categories_service.dart';
 import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,45 +15,72 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.appTitle),
+        title: Text(l10n.syriaVoyager),
         backgroundColor: AppConfig.primaryColor,
         foregroundColor: AppConfig.syrianWhite,
         actions: [
           IconButton(
-            icon: const Icon(Icons.search),
+            icon: const Icon(Icons.notifications),
             onPressed: () {
-              // TODO: Search functionality
+              // TODO: Go to notifications page
             },
           ),
           IconButton(
-            icon: const Icon(Icons.notifications),
+            icon: const Icon(Icons.settings),
             onPressed: () {
-              // TODO: Notifications
+              context.go('/profile');
             },
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: ListView(
         padding: const EdgeInsets.all(AppConfig.spacingM),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildWelcomeSection(),
-            const SizedBox(height: AppConfig.spacingL),
-            _buildCategoriesSection(),
-            const SizedBox(height: AppConfig.spacingL),
-            _buildFeaturedSitesSection(),
-            const SizedBox(height: AppConfig.spacingL),
-            _buildEventsSection(),
-            const SizedBox(height: AppConfig.spacingL),
-            _buildQuickActionsSection(),
-            const SizedBox(height: AppConfig.spacingL),
-          ],
-        ),
+        children: [
+          // Daily Offers
+          _SectionTitle(title: l10n.todaysOffers),
+          _HorizontalCardList(
+            itemCount: 3,
+            cardBuilder: (context, i) => _OfferCard(),
+          ),
+          const SizedBox(height: AppConfig.spacingL),
+          // Nearby Places (GPS)
+          _SectionTitle(title: l10n.nearbyPlaces),
+          _HorizontalCardList(
+            itemCount: 3,
+            cardBuilder: (context, i) => _PlaceCard(),
+          ),
+          const SizedBox(height: AppConfig.spacingL),
+          // Trip Suggestions
+          _SectionTitle(title: l10n.tripSuggestions),
+          _HorizontalCardList(
+            itemCount: 2,
+            cardBuilder: (context, i) => _TripSuggestionCard(),
+          ),
+          const SizedBox(height: AppConfig.spacingL),
+          // Events & Festivals
+          _SectionTitle(title: l10n.eventsFestivals),
+          _HorizontalCardList(
+            itemCount: 2,
+            cardBuilder: (context, i) => _EventCard(),
+          ),
+          const SizedBox(height: AppConfig.spacingL),
+          // Personalized Recommendations
+          _SectionTitle(title: l10n.recommendedForYou),
+          _HorizontalCardList(
+            itemCount: 3,
+            cardBuilder: (context, i) => _RecommendationCard(),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: AppConfig.secondaryColor,
+        icon: const Icon(Icons.map),
+        label: Text(l10n.map),
+        onPressed: () {
+          context.go('/map');
+        },
       ),
     );
   }
@@ -82,7 +110,7 @@ class _HomePageState extends State<HomePage> {
           Text(
             l10n.appSubtitle,
             style: AppConfig.body1.copyWith(
-              color: AppConfig.syrianWhite.withOpacity(0.9),
+              color: AppConfig.syrianWhite.withValues(alpha: 0.9),
             ),
           ),
         ],
@@ -92,44 +120,27 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildCategoriesSection() {
     final l10n = AppLocalizations.of(context)!;
-
-    final categories = [
-      {
-        'icon': Icons.architecture,
-        'name': l10n.categoriesArchaeological,
-        'color': AppConfig.syrianGold,
-      },
-      {
-        'icon': Icons.museum,
-        'name': l10n.categoriesMuseums,
-        'color': AppConfig.syrianRed,
-      },
-      {
-        'icon': Icons.church,
-        'name': l10n.categoriesMosques,
-        'color': AppConfig.syrianGreen,
-      },
-      {
-        'icon': Icons.park,
-        'name': l10n.categoriesParks,
-        'color': AppConfig.primaryColor,
-      },
-      {
-        'icon': Icons.beach_access,
-        'name': l10n.categoriesBeaches,
-        'color': AppConfig.secondaryColor,
-      },
-      {
-        'icon': Icons.store,
-        'name': l10n.categoriesMarkets,
-        'color': AppConfig.accentColor,
-      },
-    ];
+    final categories = CategoriesService.getFeaturedCategories(l10n);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(l10n.categories, style: AppConfig.heading3),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(l10n.categories, style: AppConfig.heading3),
+            TextButton(
+              onPressed: () => context.go('/categories'),
+              child: Text(
+                l10n.viewAll,
+                style: AppConfig.body2.copyWith(
+                  color: AppConfig.primaryColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
         const SizedBox(height: AppConfig.spacingM),
         GridView.builder(
           shrinkWrap: true,
@@ -138,7 +149,7 @@ class _HomePageState extends State<HomePage> {
             crossAxisCount: 2,
             crossAxisSpacing: AppConfig.spacingM,
             mainAxisSpacing: AppConfig.spacingM,
-            childAspectRatio: 1.5,
+            childAspectRatio: 1.3,
           ),
           itemCount: categories.length,
           itemBuilder: (context, index) {
@@ -147,6 +158,9 @@ class _HomePageState extends State<HomePage> {
               icon: category['icon'] as IconData,
               name: category['name'] as String,
               color: category['color'] as Color,
+              route: category['route'] as String,
+              category: category['category'] as String,
+              count: category['count'] as int,
             );
           },
         ),
@@ -158,6 +172,9 @@ class _HomePageState extends State<HomePage> {
     required IconData icon,
     required String name,
     required Color color,
+    required String route,
+    required String category,
+    required int count,
   }) {
     return Card(
       elevation: 4,
@@ -166,7 +183,11 @@ class _HomePageState extends State<HomePage> {
       ),
       child: InkWell(
         onTap: () {
-          // TODO: Kategoriye git
+          if (route == '/category_detail') {
+            context.go('$route?category=$category');
+          } else {
+            context.go(route);
+          }
         },
         borderRadius: BorderRadius.circular(AppConfig.radiusM),
         child: Container(
@@ -174,7 +195,10 @@ class _HomePageState extends State<HomePage> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppConfig.radiusM),
             gradient: LinearGradient(
-              colors: [color.withOpacity(0.1), color.withOpacity(0.05)],
+              colors: [
+                color.withValues(alpha: 0.1),
+                color.withValues(alpha: 0.05),
+              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -182,7 +206,14 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 32, color: color),
+              Container(
+                padding: const EdgeInsets.all(AppConfig.spacingS),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, size: 28, color: color),
+              ),
               const SizedBox(height: AppConfig.spacingS),
               Text(
                 name,
@@ -194,6 +225,22 @@ class _HomePageState extends State<HomePage> {
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: AppConfig.spacingXS),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(AppConfig.radiusS),
+                ),
+                child: Text(
+                  '$count',
+                  style: AppConfig.caption.copyWith(
+                    color: color,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 10,
+                  ),
+                ),
               ),
             ],
           ),
@@ -261,7 +308,7 @@ class _HomePageState extends State<HomePage> {
               height: 90,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: AppConfig.primaryColor.withOpacity(0.1),
+                color: AppConfig.primaryColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(AppConfig.radiusS),
               ),
               child: const Icon(Icons.photo, size: 48, color: Colors.grey),
@@ -458,9 +505,9 @@ class _HomePageState extends State<HomePage> {
       child: Container(
         padding: const EdgeInsets.all(AppConfig.spacingS),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(AppConfig.radiusM),
-          border: Border.all(color: color.withOpacity(0.3)),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -482,6 +529,237 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SectionTitle extends StatelessWidget {
+  final String title;
+  const _SectionTitle({required this.title});
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppConfig.spacingS),
+      child: Text(
+        title,
+        style: AppConfig.heading3.copyWith(fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+
+class _HorizontalCardList extends StatelessWidget {
+  final int itemCount;
+  final Widget Function(BuildContext, int) cardBuilder;
+  const _HorizontalCardList({
+    required this.itemCount,
+    required this.cardBuilder,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 180,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: itemCount,
+        separatorBuilder: (_, __) => const SizedBox(width: AppConfig.spacingM),
+        itemBuilder: cardBuilder,
+      ),
+    );
+  }
+}
+
+class _OfferCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    // TODO: Replace with real offer data
+    return GestureDetector(
+      onTap: () {
+        // TODO: Go to offer details
+      },
+      child: Card(
+        color: AppConfig.secondaryColor.withOpacity(0.1),
+        child: Container(
+          width: 160,
+          padding: const EdgeInsets.all(AppConfig.spacingM),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.local_offer,
+                size: 48,
+                color: AppConfig.secondaryColor,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l10n.specialOffer,
+                style: AppConfig.body1,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.upTo30Off,
+                style: AppConfig.body2,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PlaceCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    // TODO: Replace with real nearby place data (use GPS)
+    return GestureDetector(
+      onTap: () {
+        // TODO: Go to place details
+      },
+      child: Card(
+        color: AppConfig.accentColor.withOpacity(0.1),
+        child: Container(
+          width: 160,
+          padding: const EdgeInsets.all(AppConfig.spacingM),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.place, size: 48, color: AppConfig.accentColor),
+              const SizedBox(height: 12),
+              Text(
+                l10n.oldCity,
+                style: AppConfig.body1,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.damascus,
+                style: AppConfig.body2,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TripSuggestionCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    // TODO: Replace with real trip suggestion data
+    return GestureDetector(
+      onTap: () {
+        // TODO: Go to trip planner
+        context.go('/trip-planner');
+      },
+      child: Card(
+        color: AppConfig.primaryColor.withOpacity(0.08),
+        child: Container(
+          width: 180,
+          padding: const EdgeInsets.all(AppConfig.spacingM),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.route, size: 48, color: AppConfig.primaryColor),
+              const SizedBox(height: 12),
+              Text(
+                l10n.damascusToPalmyra,
+                style: AppConfig.body1,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.threeDaysTwoCities,
+                style: AppConfig.body2,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _EventCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    // TODO: Replace with real event data
+    return GestureDetector(
+      onTap: () {
+        // TODO: Go to event details
+      },
+      child: Card(
+        color: AppConfig.syrianRed.withOpacity(0.08),
+        child: Container(
+          width: 160,
+          padding: const EdgeInsets.all(AppConfig.spacingM),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.celebration, size: 48, color: AppConfig.syrianRed),
+              const SizedBox(height: 12),
+              Text(
+                l10n.aleppoFestival,
+                style: AppConfig.body1,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.july152024,
+                style: AppConfig.body2,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _RecommendationCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    // TODO: Replace with personalized recommendation data
+    return GestureDetector(
+      onTap: () {
+        // TODO: Go to recommended site details
+      },
+      child: Card(
+        color: AppConfig.syrianGold.withOpacity(0.08),
+        child: Container(
+          width: 160,
+          padding: const EdgeInsets.all(AppConfig.spacingM),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.star, size: 48, color: AppConfig.syrianGold),
+              const SizedBox(height: 12),
+              Text(
+                l10n.umayyadMosque,
+                style: AppConfig.body1,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.damascus,
+                style: AppConfig.body2,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );

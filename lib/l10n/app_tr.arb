@@ -180,5 +180,31 @@
   "commonError": "Bir hata oluştu",
   "commonSuccess": "Başarılı",
   "commonWarning": "Uyarı",
-  "commonInfo": "Bilgi"
+  "commonInfo": "Bilgi",
+
+  "discovery": "Keşif",
+  "map": "Harita",
+  
+  "todaysOffers": "Günün Fırsatları",
+  "nearbyPlaces": "Yakındaki Yerler",
+  "tripSuggestions": "Gezi Önerileri",
+  "eventsFestivals": "Etkinlikler ve Festivaller",
+  "recommendedForYou": "Sizin İçin Önerilenler",
+  "viewAll": "Tümünü Gör",
+  "specialOffer": "Özel Fırsat",
+  "upTo30Off": "%30'a varan indirim",
+  "oldCity": "Eski Şehir",
+  "damascus": "Şam",
+  "damascusToPalmyra": "Şam'dan Palmira'ya",
+  "threeDaysTwoCities": "3 gün, 2 şehir",
+  "aleppoFestival": "Halep Festivali",
+  "july152024": "15 Temmuz 2024",
+  "umayyadMosque": "Emevi Camii",
+  "syriaVoyager": "Syria Voyager",
+  "notifications": "Bildirimler",
+  "settings": "Ayarlar",
+  
+  "castles": "Kaleler",
+  "free": "Ücretsiz",
+  "paid": "Ücretli"
 } 

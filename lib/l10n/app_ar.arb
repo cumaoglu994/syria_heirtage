@@ -180,5 +180,31 @@
   "commonError": "حدث خطأ",
   "commonSuccess": "نجح",
   "commonWarning": "تحذير",
-  "commonInfo": "معلومات"
+  "commonInfo": "معلومات",
+
+  "discovery": "استكشاف",
+  "map": "الخريطة",
+  
+  "todaysOffers": "عروض اليوم",
+  "nearbyPlaces": "الأماكن القريبة",
+  "tripSuggestions": "اقتراحات الرحلات",
+  "eventsFestivals": "الأحداث والمهرجانات",
+  "recommendedForYou": "موصى به لك",
+  "viewAll": "عرض الكل",
+  "specialOffer": "عرض خاص",
+  "upTo30Off": "خصم يصل إلى 30%",
+  "oldCity": "المدينة القديمة",
+  "damascus": "دمشق",
+  "damascusToPalmyra": "من دمشق إلى تدمر",
+  "threeDaysTwoCities": "3 أيام، مدينتان",
+  "aleppoFestival": "مهرجان حلب",
+  "july152024": "15 يوليو 2024",
+  "umayyadMosque": "الجامع الأموي",
+  "syriaVoyager": "سوريا فويجر",
+  "notifications": "الإشعارات",
+  "settings": "الإعدادات",
+  
+  "castles": "القلاع",
+  "free": "مجاني",
+  "paid": "مدفوع"
 } 

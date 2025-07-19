@@ -3,13 +3,16 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'core/config/app_config.dart';
 import 'shared/providers/language_provider.dart';
 import 'shared/providers/theme_provider.dart';
 import 'shared/providers/auth_provider.dart';
+import 'features/splash/presentation/pages/splash_page.dart';
+import 'features/auth/presentation/pages/auth_page.dart';
 import 'features/home/presentation/pages/home_page.dart';
-import 'features/explore/presentation/pages/explore_page.dart';
 import 'features/events/presentation/pages/events_page.dart';
 import 'features/tours/presentation/pages/tours_page.dart';
 import 'features/shopping/presentation/pages/shopping_page.dart';
@@ -17,13 +20,36 @@ import 'features/accommodation/presentation/pages/accommodation_page.dart';
 import 'features/ar/presentation/pages/ar_page.dart';
 import 'features/profile/presentation/pages/profile_page.dart';
 import 'features/profile/presentation/pages/language_demo_page.dart';
+import 'features/explore/presentation/pages/category_detail_page.dart';
+import 'features/map/presentation/pages/map_page.dart';
+import 'features/discovery/presentation/pages/discovery_page.dart';
+import 'features/packages/presentation/pages/packages_page.dart';
+import 'features/trip_planner/presentation/pages/trip_planner_page.dart';
+import 'features/audio_guide/presentation/pages/audio_guide_page.dart';
+import 'features/syriagram/presentation/pages/syriagram_page.dart';
+import 'features/support/presentation/pages/support_page.dart';
+import 'features/admin/presentation/pages/admin_panel_page.dart';
 
-void main() {
-  runApp(const SyrianHeritageApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase (optional - will skip if config files are missing)
+  try {
+    await Firebase.initializeApp();
+    print('Firebase initialized successfully');
+  } catch (e) {
+    print('Firebase initialization failed: $e');
+    print('Continuing without Firebase...');
+  }
+
+  // Initialize Hive
+  await Hive.initFlutter();
+
+  runApp(const SyriaVoyagerApp());
 }
 
-class SyrianHeritageApp extends StatelessWidget {
-  const SyrianHeritageApp({super.key});
+class SyriaVoyagerApp extends StatelessWidget {
+  const SyriaVoyagerApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,18 +62,16 @@ class SyrianHeritageApp extends StatelessWidget {
       child: Consumer2<LanguageProvider, ThemeProvider>(
         builder: (context, languageProvider, themeProvider, child) {
           return MaterialApp.router(
-            title: 'Syrian Heritage',
+            title: AppConfig.appName,
             debugShowCheckedModeBanner: false,
 
             // Localization
             locale: languageProvider.currentLocale,
             supportedLocales: const [
-              Locale('en', 'US'),
               Locale('ar', 'SA'),
-              Locale('ru', 'RU'),
+              Locale('en', 'US'),
               Locale('fr', 'FR'),
-              Locale('zh', 'CN'),
-              Locale('tr', 'TR'),
+              Locale('ru', 'RU'),
             ],
             localizationsDelegates: const [
               AppLocalizations.delegate,
@@ -59,9 +83,8 @@ class SyrianHeritageApp extends StatelessWidget {
             // Theme
             theme: _buildTheme(themeProvider.isDarkMode),
             darkTheme: _buildTheme(true),
-            themeMode: themeProvider.isDarkMode
-                ? ThemeMode.dark
-                : ThemeMode.light,
+            themeMode:
+                themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
 
             // Router
             routerConfig: _buildRouter(),
@@ -83,12 +106,10 @@ class SyrianHeritageApp extends StatelessWidget {
 
       // App Bar Theme
       appBarTheme: AppBarTheme(
-        backgroundColor: isDark
-            ? AppConfig.primaryColor
-            : AppConfig.surfaceColor,
-        foregroundColor: isDark
-            ? AppConfig.syrianWhite
-            : AppConfig.textPrimaryColor,
+        backgroundColor:
+            isDark ? AppConfig.primaryColor : AppConfig.surfaceColor,
+        foregroundColor:
+            isDark ? AppConfig.syrianWhite : AppConfig.textPrimaryColor,
         elevation: 0,
         centerTitle: true,
         titleTextStyle: AppConfig.heading3.copyWith(
@@ -98,13 +119,11 @@ class SyrianHeritageApp extends StatelessWidget {
 
       // Bottom Navigation Bar Theme
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: isDark
-            ? AppConfig.primaryColor
-            : AppConfig.surfaceColor,
+        backgroundColor:
+            isDark ? AppConfig.primaryColor : AppConfig.surfaceColor,
         selectedItemColor: AppConfig.secondaryColor,
-        unselectedItemColor: isDark
-            ? AppConfig.textLightColor
-            : AppConfig.textSecondaryColor,
+        unselectedItemColor:
+            isDark ? AppConfig.textLightColor : AppConfig.textSecondaryColor,
         type: BottomNavigationBarType.fixed,
         elevation: 8,
       ),
@@ -177,16 +196,25 @@ class SyrianHeritageApp extends StatelessWidget {
       ),
 
       // Scaffold Background
-      scaffoldBackgroundColor: isDark
-          ? AppConfig.primaryColor
-          : AppConfig.backgroundColor,
+      scaffoldBackgroundColor:
+          isDark ? AppConfig.primaryColor : AppConfig.backgroundColor,
     );
   }
 
   GoRouter _buildRouter() {
     return GoRouter(
-      initialLocation: '/',
+      initialLocation: '/splash',
       routes: [
+        GoRoute(
+          path: '/splash',
+          name: 'splash',
+          builder: (context, state) => const SplashPage(),
+        ),
+        GoRoute(
+          path: '/auth',
+          name: 'auth',
+          builder: (context, state) => const AuthPage(),
+        ),
         ShellRoute(
           builder: (context, state, child) {
             return _MainScaffold(child: child);
@@ -198,22 +226,25 @@ class SyrianHeritageApp extends StatelessWidget {
               builder: (context, state) => const HomePage(),
             ),
             GoRoute(
-              path: '/explore',
-              name: 'explore',
-              builder: (context, state) => const ExplorePage(),
+              path: '/discovery',
+              name: 'discovery',
+              builder: (context, state) => const DiscoveryPage(),
+            ),
+            GoRoute(
+              path: '/map',
+              name: 'map',
+              builder: (context, state) => const MapPage(),
+            ),
+            GoRoute(
+              path: '/events',
+              name: 'events',
+              builder: (context, state) => const EventsPage(),
             ),
             GoRoute(
               path: '/tours',
               name: 'tours',
               builder: (context, state) => const ToursPage(),
             ),
-            GoRoute(
-              path: '/profile',
-              name: 'profile',
-              builder: (context, state) => const ProfilePage(),
-            ),
-
-            // Additional routes (not in bottom navigation)
             GoRoute(
               path: '/shopping',
               name: 'shopping',
@@ -230,9 +261,52 @@ class SyrianHeritageApp extends StatelessWidget {
               builder: (context, state) => const ARPage(),
             ),
             GoRoute(
+              path: '/profile',
+              name: 'profile',
+              builder: (context, state) => const ProfilePage(),
+            ),
+            GoRoute(
               path: '/language-demo',
               name: 'language-demo',
               builder: (context, state) => const LanguageDemoPage(),
+            ),
+            GoRoute(
+              path: '/category/:category',
+              name: 'category-detail',
+              builder: (context, state) {
+                final category = state.pathParameters['category'] ?? '';
+                return CategoryDetailPage(category: category);
+              },
+            ),
+            GoRoute(
+              path: '/packages',
+              name: 'packages',
+              builder: (context, state) => const PackagesPage(),
+            ),
+            GoRoute(
+              path: '/trip-planner',
+              name: 'trip-planner',
+              builder: (context, state) => const TripPlannerPage(),
+            ),
+            GoRoute(
+              path: '/audio-guide',
+              name: 'audio-guide',
+              builder: (context, state) => const AudioGuidePage(),
+            ),
+            GoRoute(
+              path: '/syriagram',
+              name: 'syriagram',
+              builder: (context, state) => const SyriaGramPage(),
+            ),
+            GoRoute(
+              path: '/support',
+              name: 'support',
+              builder: (context, state) => const SupportPage(),
+            ),
+            GoRoute(
+              path: '/admin',
+              name: 'admin',
+              builder: (context, state) => const AdminPanelPage(),
             ),
           ],
         ),
@@ -253,73 +327,52 @@ class _MainScaffold extends StatefulWidget {
 class _MainScaffoldState extends State<_MainScaffold> {
   int _currentIndex = 0;
 
-  final List<NavigationItem> _navigationItems = [
-    NavigationItem(icon: Icons.home, label: 'home', route: '/'),
-    NavigationItem(icon: Icons.explore, label: 'explore', route: '/explore'),
-    NavigationItem(icon: Icons.map, label: 'tours', route: '/tours'),
-
-    NavigationItem(icon: Icons.person, label: 'profile', route: '/profile'),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: widget.child,
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(boxShadow: AppConfig.cardShadow),
-        child: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-            context.go(_navigationItems[index].route);
-          },
-          type: BottomNavigationBarType.fixed,
-          items: _navigationItems.map((item) {
-            return BottomNavigationBarItem(
-              icon: Icon(item.icon),
-              label: _getLocalizedLabel(item.label),
-            );
-          }).toList(),
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+
+          switch (index) {
+            case 0:
+              context.go('/');
+              break;
+
+            case 1:
+              context.go('/discovery');
+              break;
+            case 2:
+              context.go('/map');
+              break;
+            case 3:
+              context.go('/profile');
+              break;
+          }
+        },
+        type: BottomNavigationBarType.fixed,
+        items: [
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.home),
+            label: l10n.home,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.category),
+            label: l10n.discovery,
+          ),
+          BottomNavigationBarItem(icon: const Icon(Icons.map), label: l10n.map),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.person),
+            label: l10n.profile,
+          ),
+        ],
       ),
     );
   }
-
-  String _getLocalizedLabel(String key) {
-    final l10n = AppLocalizations.of(context);
-    switch (key) {
-      case 'home':
-        return l10n?.home ?? 'Home';
-      case 'explore':
-        return l10n?.explore ?? 'Explore';
-      case 'events':
-        return l10n?.events ?? 'Events';
-      case 'tours':
-        return l10n?.tours ?? 'Tours';
-      case 'shopping':
-        return l10n?.shopping ?? 'Shopping';
-      case 'accommodation':
-        return l10n?.accommodation ?? 'Accommodation';
-      case 'ar':
-        return l10n?.ar ?? 'AR';
-      case 'profile':
-        return l10n?.profile ?? 'Profile';
-      default:
-        return key;
-    }
-  }
-}
-
-class NavigationItem {
-  final IconData icon;
-  final String label;
-  final String route;
-
-  NavigationItem({
-    required this.icon,
-    required this.label,
-    required this.route,
-  });
 }

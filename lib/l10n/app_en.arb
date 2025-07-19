@@ -187,5 +187,31 @@
   "commonError": "An error occurred",
   "commonSuccess": "Success",
   "commonWarning": "Warning",
-  "commonInfo": "Information"
+  "commonInfo": "Information",
+
+  "discovery": "Discovery",
+  "map": "Map",
+  
+  "todaysOffers": "Today's Offers",
+  "nearbyPlaces": "Nearby Places",
+  "tripSuggestions": "Trip Suggestions",
+  "eventsFestivals": "Events & Festivals",
+  "recommendedForYou": "Recommended for You",
+  "viewAll": "View All",
+  "specialOffer": "Special Offer",
+  "upTo30Off": "Up to 30% off",
+  "oldCity": "Old City",
+  "damascus": "Damascus",
+  "damascusToPalmyra": "Damascus to Palmyra",
+  "threeDaysTwoCities": "3 days, 2 cities",
+  "aleppoFestival": "Aleppo Festival",
+  "july152024": "July 15, 2024",
+  "umayyadMosque": "Umayyad Mosque",
+  "syriaVoyager": "Syria Voyager",
+  "notifications": "Notifications",
+  "settings": "Settings",
+  
+  "castles": "Castles",
+  "free": "Free",
+  "paid": "Paid"
 } 

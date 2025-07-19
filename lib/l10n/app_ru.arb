@@ -180,5 +180,31 @@
   "quickActionQrPass": "QR пропуск",
   "quickActionMap": "Карта",
   "quickActionGuides": "Гиды",
-  "quickActionShopping": "Покупки"
+  "quickActionShopping": "Покупки",
+  
+  "discovery": "Открытия",
+  "map": "Карта",
+  
+  "todaysOffers": "Предложения дня",
+  "nearbyPlaces": "Близлежащие места",
+  "tripSuggestions": "Предложения путешествий",
+  "eventsFestivals": "События и фестивали",
+  "recommendedForYou": "Рекомендуется для вас",
+  "viewAll": "Посмотреть все",
+  "specialOffer": "Специальное предложение",
+  "upTo30Off": "Скидка до 30%",
+  "oldCity": "Старый город",
+  "damascus": "Дамаск",
+  "damascusToPalmyra": "Из Дамаска в Пальмиру",
+  "threeDaysTwoCities": "3 дня, 2 города",
+  "aleppoFestival": "Фестиваль в Алеппо",
+  "july152024": "15 июля 2024",
+  "umayyadMosque": "Мечеть Омейядов",
+  "syriaVoyager": "Syria Voyager",
+  "notifications": "Уведомления",
+  "settings": "Настройки",
+  
+  "castles": "Замки",
+  "free": "Бесплатно",
+  "paid": "Платно"
 } 

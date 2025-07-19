@@ -180,5 +180,31 @@
   "quickActionQrPass": "二维码通行证",
   "quickActionMap": "地图",
   "quickActionGuides": "导游",
-  "quickActionShopping": "购物"
+  "quickActionShopping": "购物",
+
+  "discovery": "发现",
+  "map": "地图",
+  
+  "todaysOffers": "今日优惠",
+  "nearbyPlaces": "附近地点",
+  "tripSuggestions": "行程建议",
+  "eventsFestivals": "活动与节日",
+  "recommendedForYou": "为你推荐",
+  "viewAll": "查看全部",
+  "specialOffer": "特别优惠",
+  "upTo30Off": "高达30%折扣",
+  "oldCity": "老城区",
+  "damascus": "大马士革",
+  "damascusToPalmyra": "大马士革到帕尔米拉",
+  "threeDaysTwoCities": "3天2城",
+  "aleppoFestival": "阿勒颇节",
+  "july152024": "2024年7月15日",
+  "umayyadMosque": "倭马亚清真寺",
+  "syriaVoyager": "Syria Voyager",
+  "notifications": "通知",
+  "settings": "设置",
+  
+  "castles": "城堡",
+  "free": "免费",
+  "paid": "付费"
 } 

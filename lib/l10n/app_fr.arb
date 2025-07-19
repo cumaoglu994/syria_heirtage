@@ -180,5 +180,31 @@
   "quickActionQrPass": "Passe QR",
   "quickActionMap": "Carte",
   "quickActionGuides": "Guides",
-  "quickActionShopping": "Shopping"
+  "quickActionShopping": "Shopping",
+  
+  "discovery": "Découverte",
+  "map": "Carte",
+  
+  "todaysOffers": "Offres du jour",
+  "nearbyPlaces": "Lieux à proximité",
+  "tripSuggestions": "Suggestions de voyage",
+  "eventsFestivals": "Événements et festivals",
+  "recommendedForYou": "Recommandé pour vous",
+  "viewAll": "Voir tout",
+  "specialOffer": "Offre spéciale",
+  "upTo30Off": "Jusqu'à 30% de réduction",
+  "oldCity": "Vieille ville",
+  "damascus": "Damas",
+  "damascusToPalmyra": "De Damas à Palmyre",
+  "threeDaysTwoCities": "3 jours, 2 villes",
+  "aleppoFestival": "Festival d'Alep",
+  "july152024": "15 juillet 2024",
+  "umayyadMosque": "Mosquée des Omeyyades",
+  "syriaVoyager": "Syria Voyager",
+  "notifications": "Notifications",
+  "settings": "Paramètres",
+  
+  "castles": "Châteaux",
+  "free": "Gratuit",
+  "paid": "Payant"
 } 
