@@ -220,5 +220,13 @@
   "opportunities": "机会",
   "restaurants": "餐厅",
   "facilities": "设施",
-  "homeBottomServices": "服务与更多"
+  "homeBottomServices": "服务与更多",
+  
+  "tripSuggestionPalmyraDesc": "探索帕尔米拉的古代遗址和大马士革的历史街道",
+  "tripSuggestionAleppoTitle": "阿勒颇遗产之旅",
+  "tripSuggestionAleppoDuration": "2天，1个城市",
+  "tripSuggestionAleppoDesc": "通过导游带领的游览发现阿勒颇丰富的文化遗产",
+  "tripSuggestionCoastalTitle": "叙利亚海岸冒险",
+  "tripSuggestionCoastalDuration": "4天，3个城市",
+  "tripSuggestionCoastalDesc": "访问拉塔基亚、塔尔图斯，享受美丽的叙利亚海岸"
 } 

@@ -227,5 +227,13 @@
   "opportunities": "Opportunities",
   "restaurants": "Restaurants",
   "facilities": "Facilities",
-  "homeBottomServices": "Services & More"
+  "homeBottomServices": "Services & More",
+  
+  "tripSuggestionPalmyraDesc": "Explore the ancient ruins of Palmyra and the historic streets of Damascus",
+  "tripSuggestionAleppoTitle": "Aleppo Heritage Tour",
+  "tripSuggestionAleppoDuration": "2 days, 1 city",
+  "tripSuggestionAleppoDesc": "Discover the rich cultural heritage of Aleppo with guided tours",
+  "tripSuggestionCoastalTitle": "Coastal Syria Adventure",
+  "tripSuggestionCoastalDuration": "4 days, 3 cities",
+  "tripSuggestionCoastalDesc": "Visit Latakia, Tartus, and enjoy the beautiful Syrian coast"
 } 

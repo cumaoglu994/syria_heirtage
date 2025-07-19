@@ -220,5 +220,13 @@
   "opportunities": "الفرص",
   "restaurants": "المطاعم",
   "facilities": "المرافق",
-  "homeBottomServices": "الخدمات والمزيد"
+  "homeBottomServices": "الخدمات والمزيد",
+  
+  "tripSuggestionPalmyraDesc": "استكشف أطلال تدمر القديمة وشوارع دمشق التاريخية",
+  "tripSuggestionAleppoTitle": "جولة تراث حلب",
+  "tripSuggestionAleppoDuration": "يومان، مدينة واحدة",
+  "tripSuggestionAleppoDesc": "اكتشف التراث الثقافي الغني لحلب مع جولات إرشادية",
+  "tripSuggestionCoastalTitle": "مغامرة الساحل السوري",
+  "tripSuggestionCoastalDuration": "4 أيام، 3 مدن",
+  "tripSuggestionCoastalDesc": "زر اللاذقية وطرطوس واستمتع بالساحل السوري الجميل"
 } 

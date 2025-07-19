@@ -220,5 +220,13 @@
   "opportunities": "Fırsatlar",
   "restaurants": "Restoranlar",
   "facilities": "Tesisler",
-  "homeBottomServices": "Hizmetler ve Daha Fazlası"
+  "homeBottomServices": "Hizmetler ve Daha Fazlası",
+  
+  "tripSuggestionPalmyraDesc": "Palmira'nın antik kalıntılarını ve Şam'ın tarihi sokaklarını keşfedin",
+  "tripSuggestionAleppoTitle": "Halep Miras Turu",
+  "tripSuggestionAleppoDuration": "2 gün, 1 şehir",
+  "tripSuggestionAleppoDesc": "Rehberli turlarla Halep'in zengin kültürel mirasını keşfedin",
+  "tripSuggestionCoastalTitle": "Suriye Sahil Macerası",
+  "tripSuggestionCoastalDuration": "4 gün, 3 şehir",
+  "tripSuggestionCoastalDesc": "Lazkiye, Tartus'u ziyaret edin ve güzel Suriye sahilinin tadını çıkarın"
 } 

@@ -51,11 +51,7 @@ class _HomePageState extends State<HomePage> {
 
           const SizedBox(height: AppConfig.spacingL),
           // Trip Suggestions
-          _SectionTitle(title: l10n.tripSuggestions),
-          _HorizontalCardList(
-            itemCount: 2,
-            cardBuilder: (context, i) => _TripSuggestionCard(),
-          ),
+          _buildTripSuggestionsSection(),
           const SizedBox(height: AppConfig.spacingL),
 
           const SizedBox(height: AppConfig.spacingL),
@@ -526,6 +522,29 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildTripSuggestionsSection() {
+    final l10n = AppLocalizations.of(context)!;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(l10n.tripSuggestions, style: AppConfig.heading3),
+        const SizedBox(height: AppConfig.spacingM),
+        SizedBox(
+          height: 130,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: 3,
+            separatorBuilder: (context, index) => const SizedBox(width: 16),
+            itemBuilder: (context, index) {
+              return _buildTripSuggestionCard(index);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildEventCard(int index) {
     final l10n = AppLocalizations.of(context)!;
 
@@ -570,6 +589,92 @@ class _HomePageState extends State<HomePage> {
               style: AppConfig.body2,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTripSuggestionCard(int index) {
+    final l10n = AppLocalizations.of(context)!;
+
+    final tripSuggestions = [
+      {
+        'title': l10n.damascusToPalmyra,
+        'duration': l10n.threeDaysTwoCities,
+        'desc': l10n.tripSuggestionPalmyraDesc,
+        'icon': Icons.route,
+        'color': AppConfig.primaryColor,
+      },
+      {
+        'title': l10n.tripSuggestionAleppoTitle,
+        'duration': l10n.tripSuggestionAleppoDuration,
+        'desc': l10n.tripSuggestionAleppoDesc,
+        'icon': Icons.castle,
+        'color': AppConfig.syrianRed,
+      },
+      {
+        'title': l10n.tripSuggestionCoastalTitle,
+        'duration': l10n.tripSuggestionCoastalDuration,
+        'desc': l10n.tripSuggestionCoastalDesc,
+        'icon': Icons.beach_access,
+        'color': AppConfig.accentColor,
+      },
+    ];
+    final trip = tripSuggestions[index];
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppConfig.radiusM),
+      ),
+      child: Container(
+        width: 200,
+        height: 130,
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: trip['color'] as Color,
+                    borderRadius: BorderRadius.circular(AppConfig.radiusS),
+                  ),
+                  child: Icon(
+                    trip['icon'] as IconData,
+                    color: AppConfig.syrianWhite,
+                    size: 16,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    trip['title'] as String,
+                    style:
+                        AppConfig.body2.copyWith(fontWeight: FontWeight.bold),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Text(
+              trip['duration'] as String,
+              style: AppConfig.caption.copyWith(color: trip['color'] as Color),
+            ),
+            const SizedBox(height: 4),
+            Expanded(
+              child: Text(
+                trip['desc'] as String,
+                style: AppConfig.caption,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ],
         ),

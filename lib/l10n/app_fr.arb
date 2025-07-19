@@ -220,5 +220,13 @@
   "opportunities": "Opportunités",
   "restaurants": "Restaurants",
   "facilities": "Installations",
-  "homeBottomServices": "Services et Plus"
+  "homeBottomServices": "Services et Plus",
+  
+  "tripSuggestionPalmyraDesc": "Explorez les ruines antiques de Palmyre et les rues historiques de Damas",
+  "tripSuggestionAleppoTitle": "Tour du Patrimoine d'Alep",
+  "tripSuggestionAleppoDuration": "2 jours, 1 ville",
+  "tripSuggestionAleppoDesc": "Découvrez le riche patrimoine culturel d'Alep avec des visites guidées",
+  "tripSuggestionCoastalTitle": "Aventure Côtière de Syrie",
+  "tripSuggestionCoastalDuration": "4 jours, 3 villes",
+  "tripSuggestionCoastalDesc": "Visitez Lattaquié, Tartous, et profitez de la belle côte syrienne"
 } 

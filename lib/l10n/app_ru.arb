@@ -220,5 +220,13 @@
   "opportunities": "Возможности",
   "restaurants": "Рестораны",
   "facilities": "Удобства",
-  "homeBottomServices": "Услуги и Другое"
+  "homeBottomServices": "Услуги и Другое",
+  
+  "tripSuggestionPalmyraDesc": "Исследуйте древние руины Пальмиры и исторические улицы Дамаска",
+  "tripSuggestionAleppoTitle": "Тур по Наследию Алеппо",
+  "tripSuggestionAleppoDuration": "2 дня, 1 город",
+  "tripSuggestionAleppoDesc": "Откройте богатое культурное наследие Алеппо с экскурсиями",
+  "tripSuggestionCoastalTitle": "Приключения на Сирийском Побережье",
+  "tripSuggestionCoastalDuration": "4 дня, 3 города",
+  "tripSuggestionCoastalDesc": "Посетите Латакию, Тартус и насладитесь красивым сирийским побережьем"
 } 
