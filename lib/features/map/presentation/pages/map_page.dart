@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../core/config/app_config.dart';
+import '../../../../core/services/location_service.dart';
+import 'package:go_router/go_router.dart';
 
 /// Interactive map screen for Syria
 class MapPage extends StatefulWidget {
@@ -16,64 +19,115 @@ class _MapPageState extends State<MapPage> {
   Position? _currentPosition;
   Set<Marker> _markers = {};
   bool _isLoading = true;
+  bool _locationPermissionGranted = false;
+  bool _locationServiceEnabled = false;
 
-  // موقع سوريا الافتراضي
+  // Default Syria center position
   static const CameraPosition _syriaCenter = CameraPosition(
-    target: LatLng(34.8021, 38.9968), // وسط سوريا
+    target: LatLng(34.8021, 38.9968), // Center of Syria
     zoom: 6.0,
   );
 
   @override
   void initState() {
     super.initState();
-    _getCurrentLocation();
-    _loadTouristSites();
+    _initializeMap();
+  }
+
+  Future<void> _initializeMap() async {
+    try {
+      await _checkLocationServices();
+      _loadTouristSites();
+    } catch (e) {
+      _showErrorDialog('Map initialization error: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _checkLocationServices() async {
+    try {
+      bool hasPermission =
+          await LocationService.checkLocationPermission(context);
+      setState(() {
+        _locationPermissionGranted = hasPermission;
+        _locationServiceEnabled = hasPermission;
+      });
+
+      if (hasPermission) {
+        await _getCurrentLocation();
+      }
+    } catch (e) {
+      _showErrorDialog('Location service error: $e');
+    }
   }
 
   Future<void> _getCurrentLocation() async {
     try {
-      // TODO: طلب إذن الموقع
-      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        // TODO: إظهار رسالة تفعيل خدمة الموقع
-        return;
-      }
-
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          // TODO: إظهار رسالة رفض الإذن
-          return;
-        }
-      }
-
-      if (permission == LocationPermission.deniedForever) {
-        // TODO: إظهار رسالة الإذن مرفوض نهائياً
-        return;
-      }
-
-      Position position = await Geolocator.getCurrentPosition();
       setState(() {
-        _currentPosition = position;
+        _isLoading = true;
       });
 
-      _mapController?.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-            target: LatLng(position.latitude, position.longitude),
-            zoom: 12.0,
+      Position? position = await LocationService.getCurrentLocation(context);
+
+      if (position != null) {
+        setState(() {
+          _currentPosition = position;
+          _locationPermissionGranted = true;
+        });
+
+        // Animate camera to current location
+        _mapController?.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: LatLng(position.latitude, position.longitude),
+              zoom: 12.0,
+            ),
           ),
-        ),
-      );
+        );
+
+        LocationService.showSuccessSnackBar(
+            context, 'Location updated successfully!');
+      }
     } catch (e) {
-      // TODO: معالجة الأخطاء
-      print('خطأ في الحصول على الموقع: $e');
+      _showErrorDialog('Could not get current location: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            children: [
+              Icon(Icons.error, color: AppConfig.errorColor),
+              const SizedBox(width: 8),
+              const Text('Error'),
+            ],
+          ),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _loadTouristSites() {
-    // TODO: استبدال ببيانات حقيقية من Firebase
+    // Sample tourist sites data
     final sites = [
       {
         'id': '1',
@@ -139,14 +193,9 @@ class _MapPageState extends State<MapPage> {
         },
       );
     }).toSet();
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   BitmapDescriptor _getMarkerIcon(String category) {
-    // TODO: استبدال بأيقونات مخصصة لكل فئة
     switch (category) {
       case 'archaeological':
         return BitmapDescriptor.defaultMarkerWithHue(
@@ -178,21 +227,27 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('خريطة سوريا'),
+        title: Text(l10n.map),
         backgroundColor: AppConfig.primaryColor,
         foregroundColor: AppConfig.syrianWhite,
         actions: [
           IconButton(
             icon: const Icon(Icons.my_location),
-            onPressed: _getCurrentLocation,
+            onPressed: _locationPermissionGranted
+                ? _getCurrentLocation
+                : _checkLocationServices,
+            tooltip: 'Get Current Location',
           ),
           IconButton(
             icon: const Icon(Icons.layers),
             onPressed: () {
-              // TODO: إظهار طبقات الخريطة (فنادق، مطاعم، نقل)
+              _showLayersDialog();
             },
+            tooltip: 'Map Layers',
           ),
         ],
       ),
@@ -204,27 +259,128 @@ class _MapPageState extends State<MapPage> {
             },
             initialCameraPosition: _syriaCenter,
             markers: _markers,
-            myLocationEnabled: true,
+            myLocationEnabled: _locationPermissionGranted,
             myLocationButtonEnabled: false,
             zoomControlsEnabled: false,
             mapToolbarEnabled: false,
             onTap: (LatLng position) {
-              // إغلاق Bottom Sheet عند النقر على الخريطة
+              // Close any open bottom sheets when tapping on map
             },
           ),
-          if (_isLoading) const Center(child: CircularProgressIndicator()),
-          // زر العودة للموقع الحالي
-          Positioned(
-            bottom: 100,
-            right: 16,
-            child: FloatingActionButton(
-              backgroundColor: AppConfig.primaryColor,
-              child: const Icon(Icons.my_location, color: Colors.white),
-              onPressed: _getCurrentLocation,
+          if (_isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.3),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
-          ),
+          // Current location button
+          if (_locationPermissionGranted)
+            Positioned(
+              bottom: 100,
+              right: 16,
+              child: FloatingActionButton(
+                backgroundColor: AppConfig.primaryColor,
+                child: const Icon(Icons.my_location, color: Colors.white),
+                onPressed: _getCurrentLocation,
+              ),
+            ),
+          // Location permission status indicator
+          if (!_locationPermissionGranted)
+            Positioned(
+              top: 16,
+              left: 16,
+              right: 16,
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppConfig.warningColor.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.location_off, color: AppConfig.syrianWhite),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Location access required for full map features',
+                        style: AppConfig.body2.copyWith(
+                          color: AppConfig.syrianWhite,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: _checkLocationServices,
+                      child: Text(
+                        'Enable',
+                        style: AppConfig.body2.copyWith(
+                          color: AppConfig.syrianWhite,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
         ],
       ),
+    );
+  }
+
+  void _showLayersDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Map Layers'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.location_on),
+                title: const Text('Tourist Sites'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  // TODO: Toggle tourist sites layer
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.hotel),
+                title: const Text('Hotels'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  // TODO: Toggle hotels layer
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.restaurant),
+                title: const Text('Restaurants'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  // TODO: Toggle restaurants layer
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.directions_bus),
+                title: const Text('Transportation'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  // TODO: Toggle transportation layer
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -247,7 +403,7 @@ class _SiteDetailsSheet extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // مقبض السحب
+          // Drag handle
           Container(
             margin: const EdgeInsets.only(top: AppConfig.spacingM),
             width: 40,
@@ -257,7 +413,7 @@ class _SiteDetailsSheet extends StatelessWidget {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          // صورة الموقع
+          // Site image
           Container(
             height: 200,
             width: double.infinity,
@@ -268,7 +424,7 @@ class _SiteDetailsSheet extends StatelessWidget {
             ),
             child: Stack(
               children: [
-                // TODO: استبدال بصورة حقيقية
+                // TODO: Replace with real image
                 Center(
                   child: Icon(
                     Icons.photo,
@@ -276,7 +432,7 @@ class _SiteDetailsSheet extends StatelessWidget {
                     color: AppConfig.primaryColor,
                   ),
                 ),
-                // تقييم الموقع
+                // Site rating
                 Positioned(
                   top: AppConfig.spacingM,
                   right: AppConfig.spacingM,
@@ -308,7 +464,7 @@ class _SiteDetailsSheet extends StatelessWidget {
               ],
             ),
           ),
-          // معلومات الموقع
+          // Site information
           Padding(
             padding: const EdgeInsets.all(AppConfig.spacingM),
             child: Column(
@@ -330,19 +486,19 @@ class _SiteDetailsSheet extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(site['description'], style: AppConfig.body1),
                 const SizedBox(height: AppConfig.spacingL),
-                // أزرار الإجراءات
+                // Action buttons
                 Row(
                   children: [
                     Expanded(
                       child: ElevatedButton.icon(
                         icon: const Icon(Icons.directions),
-                        label: const Text('الاتجاهات'),
+                        label: const Text('Directions'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppConfig.primaryColor,
                           foregroundColor: AppConfig.syrianWhite,
                         ),
                         onPressed: () {
-                          // TODO: فتح تطبيق الخرائط مع الاتجاهات
+                          // TODO: Open maps app with directions
                         },
                       ),
                     ),
@@ -350,13 +506,13 @@ class _SiteDetailsSheet extends StatelessWidget {
                     Expanded(
                       child: ElevatedButton.icon(
                         icon: const Icon(Icons.info),
-                        label: const Text('التفاصيل'),
+                        label: const Text('Details'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppConfig.accentColor,
                           foregroundColor: AppConfig.syrianWhite,
                         ),
                         onPressed: () {
-                          // TODO: الانتقال إلى صفحة تفاصيل الموقع
+                          // TODO: Navigate to site details page
                         },
                       ),
                     ),
