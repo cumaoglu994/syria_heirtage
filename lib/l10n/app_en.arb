@@ -235,5 +235,13 @@
   "tripSuggestionAleppoDesc": "Discover the rich cultural heritage of Aleppo with guided tours",
   "tripSuggestionCoastalTitle": "Coastal Syria Adventure",
   "tripSuggestionCoastalDuration": "4 days, 3 cities",
-  "tripSuggestionCoastalDesc": "Visit Latakia, Tartus, and enjoy the beautiful Syrian coast"
+  "tripSuggestionCoastalDesc": "Visit Latakia, Tartus, and enjoy the beautiful Syrian coast",
+  
+  "recommendationUmayyadDesc": "One of the oldest and largest mosques in the Islamic world",
+  "recommendationKrakTitle": "Krak des Chevaliers",
+  "recommendationKrakLocation": "Homs",
+  "recommendationKrakDesc": "One of the best-preserved castles from the Middle Ages",
+  "recommendationApameaTitle": "Apamea",
+  "recommendationApameaLocation": "Hama",
+  "recommendationApameaDesc": "Ancient Hellenistic city with impressive ruins"
 } 

@@ -228,5 +228,13 @@
   "tripSuggestionAleppoDesc": "Откройте богатое культурное наследие Алеппо с экскурсиями",
   "tripSuggestionCoastalTitle": "Приключения на Сирийском Побережье",
   "tripSuggestionCoastalDuration": "4 дня, 3 города",
-  "tripSuggestionCoastalDesc": "Посетите Латакию, Тартус и насладитесь красивым сирийским побережьем"
+  "tripSuggestionCoastalDesc": "Посетите Латакию, Тартус и насладитесь красивым сирийским побережьем",
+  
+  "recommendationUmayyadDesc": "Одна из старейших и крупнейших мечетей исламского мира",
+  "recommendationKrakTitle": "Крак де Шевалье",
+  "recommendationKrakLocation": "Хомс",
+  "recommendationKrakDesc": "Один из лучших сохранившихся замков Средневековья",
+  "recommendationApameaTitle": "Апамея",
+  "recommendationApameaLocation": "Хама",
+  "recommendationApameaDesc": "Древний эллинистический город с впечатляющими руинами"
 } 

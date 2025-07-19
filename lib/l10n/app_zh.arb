@@ -228,5 +228,13 @@
   "tripSuggestionAleppoDesc": "通过导游带领的游览发现阿勒颇丰富的文化遗产",
   "tripSuggestionCoastalTitle": "叙利亚海岸冒险",
   "tripSuggestionCoastalDuration": "4天，3个城市",
-  "tripSuggestionCoastalDesc": "访问拉塔基亚、塔尔图斯，享受美丽的叙利亚海岸"
+  "tripSuggestionCoastalDesc": "访问拉塔基亚、塔尔图斯，享受美丽的叙利亚海岸",
+  
+  "recommendationUmayyadDesc": "伊斯兰世界最古老和最大的清真寺之一",
+  "recommendationKrakTitle": "骑士堡",
+  "recommendationKrakLocation": "霍姆斯",
+  "recommendationKrakDesc": "中世纪保存最完好的城堡之一",
+  "recommendationApameaTitle": "阿帕米亚",
+  "recommendationApameaLocation": "哈马",
+  "recommendationApameaDesc": "拥有令人印象深刻的废墟的古代希腊化城市"
 } 

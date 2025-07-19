@@ -228,5 +228,13 @@
   "tripSuggestionAleppoDesc": "Découvrez le riche patrimoine culturel d'Alep avec des visites guidées",
   "tripSuggestionCoastalTitle": "Aventure Côtière de Syrie",
   "tripSuggestionCoastalDuration": "4 jours, 3 villes",
-  "tripSuggestionCoastalDesc": "Visitez Lattaquié, Tartous, et profitez de la belle côte syrienne"
+  "tripSuggestionCoastalDesc": "Visitez Lattaquié, Tartous, et profitez de la belle côte syrienne",
+  
+  "recommendationUmayyadDesc": "L'une des plus anciennes et plus grandes mosquées du monde islamique",
+  "recommendationKrakTitle": "Krak des Chevaliers",
+  "recommendationKrakLocation": "Homs",
+  "recommendationKrakDesc": "L'un des châteaux les mieux préservés du Moyen Âge",
+  "recommendationApameaTitle": "Apamée",
+  "recommendationApameaLocation": "Hama",
+  "recommendationApameaDesc": "Ancienne ville hellénistique avec des ruines impressionnantes"
 } 

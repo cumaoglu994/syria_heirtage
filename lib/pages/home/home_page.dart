@@ -56,11 +56,7 @@ class _HomePageState extends State<HomePage> {
 
           const SizedBox(height: AppConfig.spacingL),
           // Personalized Recommendations
-          _SectionTitle(title: l10n.recommendedForYou),
-          _HorizontalCardList(
-            itemCount: 3,
-            cardBuilder: (context, i) => _RecommendationCard(),
-          ),
+          _buildPersonalizedRecommendationsSection(),
           const SizedBox(height: AppConfig.spacingL),
           // Bottom Services Section
           _buildBottomServicesSection(),
@@ -545,6 +541,29 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildPersonalizedRecommendationsSection() {
+    final l10n = AppLocalizations.of(context)!;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(l10n.recommendedForYou, style: AppConfig.heading3),
+        const SizedBox(height: AppConfig.spacingM),
+        SizedBox(
+          height: 130,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: 3,
+            separatorBuilder: (context, index) => const SizedBox(width: 16),
+            itemBuilder: (context, index) {
+              return _buildRecommendationCard(index);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildEventCard(int index) {
     final l10n = AppLocalizations.of(context)!;
 
@@ -671,6 +690,118 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: Text(
                 trip['desc'] as String,
+                style: AppConfig.caption,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRecommendationCard(int index) {
+    final l10n = AppLocalizations.of(context)!;
+
+    final recommendations = [
+      {
+        'title': l10n.umayyadMosque,
+        'location': l10n.damascus,
+        'desc': l10n.recommendationUmayyadDesc,
+        'icon': Icons.mosque,
+        'color': AppConfig.syrianGold,
+        'rating': '4.9',
+      },
+      {
+        'title': l10n.recommendationKrakTitle,
+        'location': l10n.recommendationKrakLocation,
+        'desc': l10n.recommendationKrakDesc,
+        'icon': Icons.castle,
+        'color': AppConfig.syrianRed,
+        'rating': '4.7',
+      },
+      {
+        'title': l10n.recommendationApameaTitle,
+        'location': l10n.recommendationApameaLocation,
+        'desc': l10n.recommendationApameaDesc,
+        'icon': Icons.landscape,
+        'color': AppConfig.accentColor,
+        'rating': '4.6',
+      },
+    ];
+    final recommendation = recommendations[index];
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppConfig.radiusM),
+      ),
+      child: Container(
+        width: 200,
+        height: 130,
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: recommendation['color'] as Color,
+                    borderRadius: BorderRadius.circular(AppConfig.radiusS),
+                  ),
+                  child: Icon(
+                    recommendation['icon'] as IconData,
+                    color: AppConfig.syrianWhite,
+                    size: 16,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    recommendation['title'] as String,
+                    style:
+                        AppConfig.body2.copyWith(fontWeight: FontWeight.bold),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: recommendation['color'] as Color,
+                    borderRadius: BorderRadius.circular(AppConfig.radiusS),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.star, size: 12, color: AppConfig.syrianWhite),
+                      const SizedBox(width: 2),
+                      Text(
+                        recommendation['rating'] as String,
+                        style: AppConfig.caption.copyWith(
+                          color: AppConfig.syrianWhite,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Text(
+              recommendation['location'] as String,
+              style: AppConfig.caption
+                  .copyWith(color: recommendation['color'] as Color),
+            ),
+            const SizedBox(height: 4),
+            Expanded(
+              child: Text(
+                recommendation['desc'] as String,
                 style: AppConfig.caption,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
