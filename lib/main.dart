@@ -22,7 +22,7 @@ import 'features/profile/presentation/pages/profile_page.dart';
 import 'features/profile/presentation/pages/language_demo_page.dart';
 import 'features/explore/presentation/pages/category_detail_page.dart';
 import 'features/map/presentation/pages/map_page.dart';
-import 'features/discovery/presentation/pages/discovery_page.dart';
+import 'pages/pages/discovery_page.dart';
 import 'features/packages/presentation/pages/packages_page.dart';
 import 'features/trip_planner/presentation/pages/trip_planner_page.dart';
 import 'features/audio_guide/presentation/pages/audio_guide_page.dart';
